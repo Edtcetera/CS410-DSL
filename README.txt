@@ -1,6 +1,9 @@
-Task: You have a list of classes you are interested in taking, input them into your favorite scheduling app
+##Task: 
+You have a list of classes you are interested in taking, input them into your favorite scheduling app
 
+***
 List of classes you are interested in:
+
 CPSC 110 
 DMP 100
 Lecture M-W-F 8AM - 9AM
@@ -19,8 +22,9 @@ Lecture Tu - Th 12PM - 1.30PM
 Tutorial Tu - Th 2PM - 3PM
 Notes: 
 
+***
 
-Code snippets:
+##Code snippets:
 
 How to add an event to the schedule:
 
