@@ -27,34 +27,25 @@ Notes:
 ## Code snippets:
 
 How to add an all-day event to an annual schedule:
+Date format is {Day/Month}
 ```
-Edit my 2018 schedule.
-Add an event called "Ed's Birthday Party" on May 24.
-Add an event called "Clean up party" on May 25.
-Update my 2018 schedule.
+UPDATE 2018.
+SCHEDULE "Ed's Birthday Party" 01/02 13:00-14:00.
+ADD "notes would be here".
+UPDATE 2018.
 ```
 
 How to add a reccuring event to the schedule:
 Occurence can be one of {weekly/monthly/daily/annual} and start on specified day.
 ```
-Edit my 2017 schedule.
-Add a daily event called "Plan Ed's party" starting on May 20.
-Update my 2017 schedule.
+UPDATE 2017
+//TODO
+UPDATE 2017
 ```
 
-Adding additional information to created event using 'This event':
-'This event' refers to last event added.
-'This event happens at' edits location.
-'This event ends on' specifies end date for recurring events.
-'This event occurs from' specifies time. If no time is specified, it assumes an all-day event.
+Editing an existing event
 ```
-Edit my 2016 schedule.
-Add a daily event called "Plan Ed's party" starting on May 20.
-This event happens at 7777 Imagine Street.
-This event ends on June 3.
-
-Add an event called "Book Ed's Birthday party room" on May 20.
-This event occurs from 1PM to 2PM.
-This event happens at 5555 Discovery Street.
-Update my 2016 schedule.
+UPDATE 2018
+//TODO
+UPDATE 2018
 ```
