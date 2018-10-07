@@ -39,13 +39,18 @@ How to add a reccuring event to the schedule:
 Occurence can be one of {weekly/monthly/daily/annual} and start on specified day.
 ```
 UPDATE 2017
-//TODO
+SCHEDULE yearly "Daniela's Birthday Party" 03/12 00:00-24:00
+SCHEDULE reoccurring MWF "Grocery Shopping" 01/01 12:00-12:30
+SCHEDULE daily "Pet my Dog" 01/01 13:00-15:00
 UPDATE 2017
 ```
 
 Editing an existing event
 ```
 UPDATE 2018
-//TODO
+SCHEDULE reoccurring MWF "Grocery Shopping" 01/01 12:00-12:30
+SCHEDULE daily "Pet my Dog" 01/01 13:00-15:00
+EDIT "Grocery Shopping" 01/03 "buy milk and eggs"
+EDIT "Pet my Dog" 01/01 16:00-17:00
 UPDATE 2018
 ```
