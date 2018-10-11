@@ -1,1 +1,12 @@
-//TODO
+UPDATE 2018
+SCHEDULE daily "Yoga" 01/01 12:00-13:00
+ADD "do dog pose"
+SCHEDULE "grocery" 01/01 13:00-13:30
+SCHEDULE "program" 02/12 11:00-11:30
+EDIT "grocery" 01/01 "buy cheese"
+EDIT "grocery" 01/01 15:00-15:30
+DELETE "grocery" 01/01
+VIEW 01/01
+UPDATE YEAR 2019
+SCHEDULE reoccurring MWF "paint" 16/03 17:00-:18:00
+

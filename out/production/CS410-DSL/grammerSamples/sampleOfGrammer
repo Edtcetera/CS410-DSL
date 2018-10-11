@@ -6,7 +6,11 @@ SCHEDULE "program" 02/12 11:00-11:30
 EDIT "grocery" 01/01 "buy cheese"
 EDIT "grocery" 01/01 15:00-15:30
 DELETE "grocery" 01/01
+<<<<<<< HEAD
+VIEW 01/01     							                //Gives output of day.
+=======
 SEE 01/01     							                //Gives output of day.
+>>>>>>> master
 UPDATE YEAR 2019                                        // From this point on everything is updated in 2019
 SCHEDULE reoccurring MWF "paint" 16/03 17:00-:18:00 
 
