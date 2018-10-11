@@ -30,18 +30,20 @@ public class Tokenizer {
     private void tokenize (){
         String tokenizedProgram = program;
         tokenizedProgram = tokenizedProgram.replace("\n","");
-        tokenizedProgram = tokenizedProgram.replaceAll("([0-9]+)","_$1_");
+        tokenizedProgram = tokenizedProgram.replace("\r", "");
         System.out.println(program);
 
         for (String s : literals){
-//            tokenizedProgram = tokenizedProgram.replaceAll(s,"_"+s+"_");
             tokenizedProgram = tokenizedProgram.replace(s,"_"+s+"_");
             System.out.println(tokenizedProgram);
         }
-//        tokenizedProgram = tokenizedProgram.replaceAll("__","_");
-        tokenizedProgram = tokenizedProgram.replaceAll("[ ]+","");
+
+        tokenizedProgram = tokenizedProgram.replaceAll("\"([\\w+\\s*]*)\"", "_$1_");
+        tokenizedProgram = tokenizedProgram.replaceAll("(([0-9]+)/([0-9]+))", "_$1_");
+        tokenizedProgram = tokenizedProgram.replaceAll("(([0-9]+):([0-9]+)[-[0-9]+:[0-9]+]*)", "_$1_");
+
         System.out.println(tokenizedProgram);
-        String [] temparray=tokenizedProgram.split("[_]+");
+        String [] temparray=tokenizedProgram.split("[ ]*[_]+[ ]*[_]*");
         tokens = new String[temparray.length-1];
 
         System.arraycopy(temparray,1,tokens,0,temparray.length-1);

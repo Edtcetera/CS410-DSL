@@ -7,7 +7,7 @@ public class UPDATE extends STATEMENT {
     String year;
     @Override
     public void parse() {
-        tokenizer.getAndCheckNext("SCHEDULE");
+        tokenizer.getAndCheckNext("UPDATE");
         year = tokenizer.getNext();
     }
 
