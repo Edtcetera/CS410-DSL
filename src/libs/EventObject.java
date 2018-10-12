@@ -1,7 +1,7 @@
-package TimeObj;
+package libs;
 import java.sql.Time;
 
-public class TimeObj {
+public class EventObject {
     Time start = new Time(0);
     Time end = new Time(0);
     String title = new String();

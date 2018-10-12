@@ -1,6 +1,6 @@
 package ast;
 
-import DataHolder.DataHolder;
+import libs.SingleSchedule;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -35,7 +35,7 @@ public class DELETE extends STATEMENT {
 
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
-        DataHolder.getInstance().deleteTimeObj(scheduleDay, titleToDelete);
+        SingleSchedule.getInstance().deleteTimeObj(scheduleDay, titleToDelete);
         return null;
     }
 }
