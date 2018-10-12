@@ -7,6 +7,7 @@ import java.util.*;
 // Singleton implemented : Probably not amazingly. TODOTODO
 
 public class SingleSchedule {
+    int currentYear; //Update this value when program reads UPDATE year. Keeps track of current year we are working on
     Map<Calendar, ArrayList<EventObject>> dh = new HashMap();
     private static SingleSchedule singleSchedule = null;
 
@@ -56,5 +57,16 @@ public class SingleSchedule {
         }
         singleDayData.add(edit);
         dh.put(calendar, singleDayData);
+    }
+
+    /** Gets the current year based on the last UDPATE year code*/
+    public int getCurrentWorkingYear() {
+        return currentYear;
+    }
+
+    /** Sets the current year ONLY through UPDATE.*/
+    public int setCurrentWorkingYear(int currentYear) {
+        this.currentYear =  currentYear;
+        return this.currentYear;
     }
 }
