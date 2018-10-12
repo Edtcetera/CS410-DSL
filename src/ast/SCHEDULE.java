@@ -1,6 +1,6 @@
 package ast;
 
-import TimeObj.TimeObj;
+import libs.EventObject;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class SCHEDULE extends STATEMENT {
-    TimeObj obj;
+    EventObject obj;
     Calendar scheduleDay = Calendar.getInstance();
     @Override
     public void parse() {
