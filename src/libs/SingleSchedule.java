@@ -6,18 +6,18 @@ import java.util.*;
 
 // Singleton implemented : Probably not amazingly. TODOTODO
 
-public class DataHolder {
+public class SingleSchedule {
     Map<Calendar, ArrayList<EventObject>> dh = new HashMap();
-    private static DataHolder dataHolder = null;
+    private static SingleSchedule singleSchedule = null;
 
-    private DataHolder() {
+    private SingleSchedule() {
     }
 
-    public static DataHolder getInstance() {
-        if (dataHolder == null) {
-            dataHolder = new DataHolder();
+    public static SingleSchedule getInstance() {
+        if (singleSchedule == null) {
+            singleSchedule = new SingleSchedule();
         }
-        return dataHolder;
+        return singleSchedule;
     }
 
     public void insertTimeObj(Calendar calendar, EventObject eventObject) {
