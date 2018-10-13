@@ -1,6 +1,6 @@
 package ast;
 
-import DataHolder.DataHolder;
+import libs.SingleSchedule;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -45,7 +45,7 @@ public class EDIT extends STATEMENT {
 
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
-        DataHolder.getInstance().changeTimeObj(scheduleDay, sTime, eTime, newNote, titleToEdit);
+        SingleSchedule.getInstance().changeEventObject(scheduleDay, sTime, eTime, newNote, titleToEdit);
         return null;
     }
 }

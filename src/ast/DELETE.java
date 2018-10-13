@@ -35,7 +35,7 @@ public class DELETE extends STATEMENT {
 
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
-        SingleSchedule.getInstance().deleteTimeObj(scheduleDay, titleToDelete);
+        SingleSchedule.getInstance().deleteEventObject(scheduleDay, titleToDelete);
         return null;
     }
 }
