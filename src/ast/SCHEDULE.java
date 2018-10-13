@@ -1,6 +1,7 @@
 package ast;
 
 import libs.EventObject;
+import libs.SingleSchedule;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -38,9 +39,10 @@ public class SCHEDULE extends STATEMENT {
         }
 
         next = tokenizer.getNext();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy");
         try {
-            scheduleDay.setTime(sdf.parse(next));
+            scheduleDay.setTime(sdf.parse(next + "/" + SingleSchedule.getInstance().getCurrentWorkingYear()));
+            System.out.println(scheduleDay.getTime().toString());
         } catch (ParseException e) {
             System.out.println("PARSE::SCHEDULE - unable to parse MM/DD");
         }
@@ -61,6 +63,9 @@ public class SCHEDULE extends STATEMENT {
 
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
+        SingleSchedule.getInstance().insertEventObject(scheduleDay, eventObj);
+        System.out.println("Inserted: " + scheduleDay.toString() + " " + eventObj.getTitle() + " " +
+                eventObj.getStart().toString() + " " + eventObj.getEnd());
         return null;
     }
 }
