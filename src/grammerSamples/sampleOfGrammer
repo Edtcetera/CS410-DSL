@@ -10,3 +10,28 @@ VIEW 01/01     							                //Gives output of day.
 UPDATE YEAR 2019                                        // From this point on everything is updated in 2019
 SCHEDULE reoccurring MWF "paint" 16/03 17:00-:18:00 
 
+
+DONE:
+view 2018
+view current month
+view current week
+view current year
+view today
+view 10
+view 10/10
+view 10/10/2016
+view starting 10/10
+view starting today
+view reoccurring
+view 10/10 - 12/10
+view 10/10/2016 - 10/01/2017
+
+-----------
+
+TODO: make "view range" tolerant to spaces (eg. view 10/10/2016-10/01/2017)
+view 10/10 12:00 - 17:00
+view today 12:00 - 18:00
+
+
+TODO decide if we need this?
+view 10/10 12:00-18:00, 19:00-20:00
