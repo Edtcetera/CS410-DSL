@@ -22,9 +22,9 @@ public class EDIT extends STATEMENT {
         titleToEdit = next;
 
         next = tokenizer.getNext();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy", Locale.ENGLISH);
         try {
-            scheduleDay.setTime(sdf.parse(next));
+            scheduleDay.setTime(sdf.parse(next + "/" + SingleSchedule.getInstance().getCurrentWorkingYear()));
         } catch (Exception e) {
             System.out.println("PARSE::EDIT - unable to parse MM/DD");
         }
