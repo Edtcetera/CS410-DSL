@@ -25,9 +25,9 @@ public class DELETE extends STATEMENT {
         // Get Date to Delete said Title.
         next = tokenizer.getNext();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy", Locale.ENGLISH);
         try {
-            scheduleDay.setTime(sdf.parse(next));
+            scheduleDay.setTime(sdf.parse(next + "/" + SingleSchedule.getInstance().getCurrentWorkingYear()));
         } catch (ParseException e) {
             System.out.println("PARSE::DELETE - unable to parse MM/DD");
         }
