@@ -8,6 +8,8 @@ import java.util.*;
 public class SingleSchedule {
     int currentYear;
     Map<Calendar, ArrayList<EventObject>> dh = new HashMap();
+    // Calendar DAY_OF_WEEK values are integers: SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, and SATURDAY.
+    Map<Integer, ArrayList<EventObject>> reoccurring = new HashMap<>();
     private static SingleSchedule singleSchedule = null;
 
     private SingleSchedule() {
@@ -72,4 +74,35 @@ public class SingleSchedule {
         this.currentYear =  currentYear;
         return this.currentYear;
     }
+
+    public TreeMap<Calendar, ArrayList<EventObject>> getRangeEvents(Calendar start, Calendar end){
+        TreeMap<Calendar, ArrayList<EventObject>> sortedResult = new TreeMap();
+        for (Map.Entry<Calendar, ArrayList<EventObject>> entry : dh.entrySet()) {
+            Calendar key = entry.getKey();
+            ArrayList<EventObject> value = entry.getValue();
+            Collections.sort(value, EventsComparator);
+            if (key.before(end) && key.after(start)) sortedResult.put(key, value);
+        }
+
+        return sortedResult;
+    }
+
+    public ArrayList<EventObject> getDateEvents(Calendar date){
+        ArrayList<EventObject> events = dh.get(date);
+        Collections.sort(events, EventsComparator);
+        return events;
+    }
+
+    private static Comparator<EventObject> EventsComparator = new Comparator<EventObject>() {
+        @Override
+        public int compare(EventObject lhs, EventObject rhs) {
+            if (lhs.getStart().before(rhs.getStart()))
+                return -1;
+            else if (lhs.getStart().equals(rhs.getStart()))
+                return 0;
+            else
+                return 1;
+        }
+    };
+
 }
