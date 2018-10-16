@@ -1,6 +1,6 @@
 UPDATE 2018
-SCHEDULE daily "Yoga" 01/01 12:00-13:00
-EDIT "Yoga" 01/01 "do dog pose"
+SCHEDULE annually "Yoga" 05/05 12:00-13:00
+EDIT "Yoga" 05/05 "do dog pose"
 SCHEDULE "grocery" 01/01 13:00-13:30
 SCHEDULE "program" 02/12 11:00-11:30
 EDIT "grocery" 01/01 "buy cheese"

@@ -16,7 +16,7 @@ public class UPDATE extends STATEMENT {
 
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
-        //todo: place year into SingleSchedule to see year currently working on
+        SingleSchedule.getInstance().setCurrentWorkingYear(year);
         return null;
     }
 }

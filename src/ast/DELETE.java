@@ -25,17 +25,21 @@ public class DELETE extends STATEMENT {
         // Get Date to Delete said Title.
         next = tokenizer.getNext();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         try {
             scheduleDay.setTime(sdf.parse(next + "/" + SingleSchedule.getInstance().getCurrentWorkingYear()));
+            scheduleDay.clear(Calendar.MILLISECOND);
         } catch (ParseException e) {
-            System.out.println("PARSE::DELETE - unable to parse MM/DD");
+            System.out.println("PARSE::DELETE - unable to parse MM/dd");
         }
     }
 
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
         SingleSchedule.getInstance().deleteEventObject(scheduleDay, titleToDelete);
+        if (!SingleSchedule.getInstance().doesCalendarDayHaveEvents(scheduleDay)) {
+            SingleSchedule.getInstance().deleteCalendarDay(scheduleDay);
+        }
         return null;
     }
 }

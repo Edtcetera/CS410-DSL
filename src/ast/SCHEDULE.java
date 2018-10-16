@@ -41,19 +41,20 @@ public class SCHEDULE extends STATEMENT {
         }
 
         next = tokenizer.getNext();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.ENGLISH);
         try {
             scheduleDay.setTime(sdf.parse(next + "/" + SingleSchedule.getInstance().getCurrentWorkingYear()));
-            System.out.println(scheduleDay.getTime().toString());
+            scheduleDay.clear(Calendar.MILLISECOND);
+            System.out.print(scheduleDay.getTime().toString());
         } catch (ParseException e) {
-            System.out.println("PARSE::SCHEDULE - unable to parse MM/DD");
+            System.out.println("PARSE::SCHEDULE - unable to parse MM/dd");
         }
 
         next = tokenizer.getNext();
         try {
             //TODO: check regex for correct time format (00:00-11:11), else throw exception
             String[] splitArray = next.split("[-\\s]");
-            sdf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            sdf = new SimpleDateFormat("HH:mm", Locale.CANADA);
             eventObj.setStart(new Time(sdf.parse(splitArray[0]).getTime()));
             eventObj.setEnd(new Time(sdf.parse(splitArray[1]).getTime()));
         } catch (ParseException e) {
@@ -66,12 +67,14 @@ public class SCHEDULE extends STATEMENT {
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
         if (reoccuring.equals("none")) {
+            SingleSchedule.getInstance().insertCalendarDay(scheduleDay);
             SingleSchedule.getInstance().insertEventObject(scheduleDay, eventObj);
         } else if (reoccuring.equals("daily")) {
             Calendar insertedScheduleDay = Calendar.getInstance();
             insertedScheduleDay.setTime(scheduleDay.getTime());
             for (int i = 0; i <= 365; i++) {
                 insertedScheduleDay.add(Calendar.DATE, i);
+                SingleSchedule.getInstance().insertCalendarDay(insertedScheduleDay);
                 SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
             }
         } else if (reoccuring.equals("weekly")) {
@@ -79,6 +82,7 @@ public class SCHEDULE extends STATEMENT {
             insertedScheduleDay.setTime(scheduleDay.getTime());
             for (int i = 0; i <= 52; i++) {
                 insertedScheduleDay.add(Calendar.DAY_OF_WEEK, i);
+                SingleSchedule.getInstance().insertCalendarDay(insertedScheduleDay);
                 SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
             }
         } else if (reoccuring.equals("monthly")) {
@@ -86,6 +90,7 @@ public class SCHEDULE extends STATEMENT {
             insertedScheduleDay.setTime(scheduleDay.getTime());
             for (int i = 0; i <= 12; i++) {
                 insertedScheduleDay.add(Calendar.MONTH, i);
+                SingleSchedule.getInstance().insertCalendarDay(insertedScheduleDay);
                 SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
             }
         } else if (reoccuring.equals("annually")) {
@@ -93,12 +98,13 @@ public class SCHEDULE extends STATEMENT {
             insertedScheduleDay.setTime(scheduleDay.getTime());
             for (int i = 0; i <= 1; i++) {
                 insertedScheduleDay.add(Calendar.YEAR, i);
+                SingleSchedule.getInstance().insertCalendarDay(insertedScheduleDay);
                 SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
             }
         } else {
             System.out.println("Cannot recognize reoccurence");
         }
-        System.out.println("Inserted: " + scheduleDay.toString() + " " + eventObj.getTitle() + " " +
+        System.out.println("Inserted: " + scheduleDay.getTime().toString() + " " + eventObj.getTitle() + " " +
                 eventObj.getStart().toString() + " " + eventObj.getEnd());
         return null;
     }

@@ -22,16 +22,20 @@ public class EDIT extends STATEMENT {
         titleToEdit = next;
 
         next = tokenizer.getNext();
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/yyyy", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         try {
             scheduleDay.setTime(sdf.parse(next + "/" + SingleSchedule.getInstance().getCurrentWorkingYear()));
+            scheduleDay.clear(Calendar.MILLISECOND);
+            scheduleDay.clear(Calendar.SECOND);
+            scheduleDay.clear(Calendar.MINUTE);
+            scheduleDay.clear(Calendar.HOUR);
         } catch (Exception e) {
-            System.out.println("PARSE::EDIT - unable to parse MM/DD");
+            System.out.println("PARSE::EDIT - unable to parse MM/dd");
         }
 
         next = tokenizer.getNext();
         if (next.matches("([0-9]+:[0-9]+)-([0-9]+:[0-9]+)")) {
-            SimpleDateFormat stf = new SimpleDateFormat("HH:mm", Locale.ENGLISH);
+            SimpleDateFormat stf = new SimpleDateFormat("HH:mm", Locale.CANADA);
             String[] time = next.split("-");
             try {
                 sTime = new Time(stf.parse(time[0]).getTime());

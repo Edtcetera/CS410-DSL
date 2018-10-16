@@ -127,9 +127,9 @@ public class VIEW extends STATEMENT {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf;
         if (slashCount == 2){
-            sdf = new SimpleDateFormat("MM/DD/YYYY", Locale.CANADA);
+            sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
         } else {
-            sdf = new SimpleDateFormat("MM/DD", Locale.CANADA);
+            sdf = new SimpleDateFormat("MM/dd", Locale.CANADA);
         }
         try {
             c.setTime(sdf.parse(token));
@@ -185,7 +185,7 @@ public class VIEW extends STATEMENT {
     }
 
     private static String getDayScheduleStr(ArrayList<EventObject> events){
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/YYYY", Locale.CANADA);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
         StringBuilder result = new StringBuilder();
         for (EventObject event : events) {
             String start = sdf.format(event.getStart());
@@ -227,7 +227,7 @@ public class VIEW extends STATEMENT {
             //TODO
         } else if (date != null) {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/YYYY", Locale.CANADA);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
             String day = sdf.format(date);
             result.append("MY SCHEDULE FOR " + day + ": \n");
             ArrayList<EventObject> events = ss.getDateEvents(date);
@@ -235,7 +235,7 @@ public class VIEW extends STATEMENT {
 
         } else if (date_range_start != null && date_range_end != null){
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/DD/YYYY", Locale.CANADA);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
             String range_start = sdf.format(date_range_start);
             String range_end = sdf.format(date_range_end);
             result.append("MY SCHEDULE FROM " + range_start + " TO " + range_end+ ": \n");
