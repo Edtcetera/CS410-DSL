@@ -27,41 +27,11 @@ public class VIEW extends STATEMENT {
     public void parse() {
         tokenizer.getAndCheckNext("VIEW");
 
-//         DONE:
-//         view 2018
-//         view current month
-//         view current week
-//         view current year
-//         view today
-//         view 10
-//         view 10/10
-//         view 10/10/2016
-//         view starting 10/10
-//         view starting today
-//         view reoccurring
-//         view 10/10 - 12/10
-//         view 10/10/2016 - 10/01/2017
-//
-//        -----------
-//
-//         TODO: make "view range" tolerant to spaces (eg. view 10/10/2016-10/01/2017)
-//         view 10/10 12:00 - 17:00
-//         view today 12:00 - 18:00
-//
-//
-//         TODO decide if we need these?
-//         view today starting 12:00 -- ?
-//         view 10/10 starting 12:00 -- ?
-//         view 10/10 12:00-18:00, 19:00-20:00 -- ?
-
         String n1 = tokenizer.getNext();
-        String n2;
-        String n3;
 
         if (!n1.equals("NO_MORE_TOKENS")){
-            n2 = tokenizer.getNext();
-            if (n1.equals("current")){
-                if (n2.equals("month")) {
+            if (n1.contains("current") || n1.contains("this")){
+                if (n1.contains("month")) {
 
                     int month = Calendar.getInstance().get(Calendar.MONTH);
                     int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -72,7 +42,7 @@ public class VIEW extends STATEMENT {
                     date_range_start = c_start;
                     date_range_end = c_end;
 
-                } else if (n2.equals("year")) {
+                } else if (n1.contains("year")) {
 
                     int year = Calendar.getInstance().get(Calendar.YEAR);
                     Calendar c_start = Calendar.getInstance();
@@ -82,7 +52,7 @@ public class VIEW extends STATEMENT {
                     date_range_start = c_start;
                     date_range_end = c_end;
 
-                } else if (n2.equals("week")){
+                } else if (n1.contains("week")){
                     Calendar c_start = Calendar.getInstance();
                     Calendar c_end = Calendar.getInstance();
                     c_start.setTime(getWeekStartDate());
@@ -92,23 +62,8 @@ public class VIEW extends STATEMENT {
                 } else System.out.println("Could not parse VIEW.");
             }
 
-            else if (n1.equals("starting")){
-                if (!n2.equals("NO_MORE_TOKENS")){
-                    if (n2.equals("today")){
-                        date_range_start = Calendar.getInstance();
-                    } else {
-                        date_range_start = getDate(n2);
-                    }
-                } else
-                    System.out.println("Could not parse VIEW.");
-
-            }
-
             else if (n1.equals("today")){
                 date = Calendar.getInstance();
-                if (!n2.equals("NO_MORE_TOKENS")) {
-                    // TODO set the time range
-                }
             }
 
             else if (n1.equals("reoccurring")){
@@ -116,44 +71,25 @@ public class VIEW extends STATEMENT {
             }
 
             // either single date or date range case is left
-            else if (n2.equals("NO_MORE_TOKENS")){
-                // single date
-                if (!n1.contains("/")){
-                    if (n1.length() == 2){
-                        int month = Integer.parseInt(n1);
-                        int year = Calendar.getInstance().get(Calendar.YEAR);
-                        Calendar c_start = Calendar.getInstance();
-                        Calendar c_end = Calendar.getInstance();
-                        c_start.setTime(getMonthStartDate(year, month));
-                        c_end.setTime(getMonthEndDate(year, month));
-                        date_range_start = c_start;
-                        date_range_end = c_end;
+            else if (!n1.contains("/")){
+                int year = Integer.parseInt(n1);
+                Calendar c_start = Calendar.getInstance();
+                Calendar c_end = Calendar.getInstance();
+                c_start.setTime(getYearStartDate(year));
+                c_end.setTime(getYearEndDate(year));
+                date_range_start = c_start;
+                date_range_end = c_end;
 
-                    } else {
-                        int year = Integer.parseInt(n1);
-                        Calendar c_start = Calendar.getInstance();
-                        Calendar c_end = Calendar.getInstance();
-                        c_start.setTime(getYearStartDate(year));
-                        c_end.setTime(getYearEndDate(year));
-                        date_range_start = c_start;
-                        date_range_end = c_end;
-                    }
-                } else {
-                    date = getDate(n1);
-                }
+            } else if (!n1.contains("-")){
+                date = getDate(n1);
             } else {
-                // date range or single date with time range
-                if (!n2.equals("-")){
-                    // single date with time range
-                    // TODO set the time range
-                } else {
-                    // Date range
-                    n3 = tokenizer.getNext();
-                    date_range_start = getDate(n1);
-                    date_range_end = getDate(n3);
-                }
+                // date range 10/10/2016 - 10/01/2017
+                n1.replaceAll( " ", "");
+                String[] parts = n1.split("-");
+                date_range_start = getDate(parts[0]);
+                date_range_end = getDate(parts[1]);
             }
-        } else System.out.println("Could not parse VIEW.");
+        }
 
     }
 
@@ -161,13 +97,9 @@ public class VIEW extends STATEMENT {
         int slashCount = token.length() - token.replace("/", "").length();
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf;
-        if (slashCount == 2){
-            sdf = new SimpleDateFormat("MM/DD/YYYY", Locale.CANADA);
-        } else {
-            sdf = new SimpleDateFormat("MM/DD", Locale.CANADA);
-        }
+        sdf = new SimpleDateFormat("MM/DD/YYYY", Locale.CANADA);
         try {
-            c.setTime(sdf.parse(token));
+            c.setTime(sdf.parse(token + "/" + Integer.toString(SingleSchedule.getInstance().getCurrentWorkingYear())));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -243,21 +175,6 @@ public class VIEW extends STATEMENT {
         StringBuilder result =new StringBuilder();
         SingleSchedule ss = SingleSchedule.getInstance();
 
-
-        // view 2018
-        // view current month
-        // view current week -- do same as for week, for year and month
-        // view current year
-        // view today
-        // view 10
-        // view 10/10
-        // view 10/10/2016
-        // view starting 10/10
-        // view starting today
-        // view reoccurring
-        // view 10/10 - 12/10
-        // view 10/10/2016 - 10/01/2017
-
         if (view_reoccurring == true){
             //TODO
         } else if (date != null) {
@@ -266,7 +183,11 @@ public class VIEW extends STATEMENT {
             String day = sdf.format(date);
             result.append("MY SCHEDULE FOR " + day + ": \n");
             ArrayList<EventObject> events = ss.getDateEvents(date);
-            result.append(getDayScheduleStr(events));
+            if (events != null){
+                result.append(getDayScheduleStr(events));
+            } else {
+                result.append("--- No events scheduled ---");
+            }
 
         } else if (date_range_start != null && date_range_end != null){
 
@@ -276,17 +197,21 @@ public class VIEW extends STATEMENT {
             result.append("MY SCHEDULE FROM " + range_start + " TO " + range_end+ ": \n");
             TreeMap<Calendar, ArrayList<EventObject>> events = ss.getRangeEvents(date_range_start, date_range_end);
 
-            for(Map.Entry<Calendar, ArrayList<EventObject>> entry : events.entrySet()) {
+            if (events != null) {
+                for (Map.Entry<Calendar, ArrayList<EventObject>> entry : events.entrySet()) {
 
-                Calendar key = entry.getKey();
-                ArrayList<EventObject> value = entry.getValue();
+                    Calendar key = entry.getKey();
+                    ArrayList<EventObject> value = entry.getValue();
 
-                String day = sdf.format(key);
-                result.append(day + ": \n");
-                result.append("\n * * * ");
+                    String day = sdf.format(key);
+                    result.append(day + ": \n");
+                    result.append("\n * * * ");
 
-                result.append(getDayScheduleStr(value));
+                    result.append(getDayScheduleStr(value));
 
+                }
+            } else {
+                result.append("--- No events scheduled for this time period ---");
             }
         }
 
