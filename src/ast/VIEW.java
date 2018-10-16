@@ -97,7 +97,11 @@ public class VIEW extends STATEMENT {
         int slashCount = token.length() - token.replace("/", "").length();
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf;
-        sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
+        if (slashCount == 2){
+            sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
+        } else {
+            sdf = new SimpleDateFormat("MM/dd", Locale.CANADA);
+        }
         try {
             c.setTime(sdf.parse(token + "/" + Integer.toString(SingleSchedule.getInstance().getCurrentWorkingYear())));
         } catch (ParseException e) {

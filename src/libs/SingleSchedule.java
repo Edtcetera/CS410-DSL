@@ -7,7 +7,7 @@ import java.util.*;
 
 public class SingleSchedule {
     int currentYear;
-    Map<Calendar, ArrayList<EventObject>> dh = new HashMap();
+    Map<Calendar, ArrayList<EventObject>> dh = new HashMap<>();
     // Calendar DAY_OF_WEEK values are integers: SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, and SATURDAY.
     Map<Integer, ArrayList<EventObject>> reoccurring = new HashMap<>();
     private static SingleSchedule singleSchedule = null;
@@ -73,6 +73,34 @@ public class SingleSchedule {
     public int setCurrentWorkingYear(int currentYear) {
         this.currentYear =  currentYear;
         return this.currentYear;
+    }
+
+
+    public void insertCalendarDay(Calendar calendar) {
+        if (!doesCalendarDayExist(calendar)) {
+            dh.put(calendar, new ArrayList<EventObject>());
+            return;
+        }
+        System.out.println("Inserting an existing day");
+    }
+
+
+    public void deleteCalendarDay(Calendar calendar) {
+        if (doesCalendarDayExist(calendar)) {
+            dh.remove(calendar);
+            return;
+        }
+        System.out.println("Calendar day does not exist to be removed");
+    }
+
+    public boolean doesCalendarDayExist(Calendar calendar) {
+        return dh.containsKey(calendar);
+    }
+
+    public boolean doesCalendarDayHaveEvents(Calendar calendar) {
+        if (dh.get(calendar) == null || dh.get(calendar).isEmpty()) {
+            return false;
+        } else return true;
     }
 
     public TreeMap<Calendar, ArrayList<EventObject>> getRangeEvents(Calendar start, Calendar end){
