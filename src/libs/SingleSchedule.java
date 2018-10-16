@@ -111,14 +111,18 @@ public class SingleSchedule {
             Collections.sort(value, EventsComparator);
             if (key.before(end) && key.after(start)) sortedResult.put(key, value);
         }
-
-        return sortedResult;
+        if (sortedResult != null)
+            return sortedResult;
+        else return null;
     }
 
     public ArrayList<EventObject> getDateEvents(Calendar date){
         ArrayList<EventObject> events = dh.get(date);
-        Collections.sort(events, EventsComparator);
-        return events;
+        if (events != null){
+            Collections.sort(events, EventsComparator);
+            return events;
+        }
+        else return null;
     }
 
     private static Comparator<EventObject> EventsComparator = new Comparator<EventObject>() {

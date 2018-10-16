@@ -27,36 +27,7 @@ public class VIEW extends STATEMENT {
     public void parse() {
         tokenizer.getAndCheckNext("VIEW");
 
-//         DONE:
-//         view 2018
-//         view current month
-//         view current week
-//         view current year
-//         view today
-//         view 10
-//         view 10/10
-//         view 10/10/2016
-//         view starting 10/10
-//         view starting today
-//         view reoccurring
-//         view 10/10 - 12/10
-//         view 10/10/2016 - 10/01/2017
-//
-//        -----------
-//
-//         TODO: make "view range" tolerant to spaces (eg. view 10/10/2016-10/01/2017)
-//         view 10/10 12:00 - 17:00
-//         view today 12:00 - 18:00
-//
-//
-//         TODO decide if we need these?
-//         view today starting 12:00 -- ?
-//         view 10/10 starting 12:00 -- ?
-//         view 10/10 12:00-18:00, 19:00-20:00 -- ?
-
         String n1 = tokenizer.getNext();
-        String n2;
-        String n3;
 
         if (!n1.equals("NO_MORE_TOKENS")){
             if (n1.contains("current") || n1.contains("this")){
@@ -132,7 +103,7 @@ public class VIEW extends STATEMENT {
             sdf = new SimpleDateFormat("MM/dd", Locale.CANADA);
         }
         try {
-            c.setTime(sdf.parse(token));
+            c.setTime(sdf.parse(token + "/" + Integer.toString(SingleSchedule.getInstance().getCurrentWorkingYear())));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -208,21 +179,6 @@ public class VIEW extends STATEMENT {
         StringBuilder result =new StringBuilder();
         SingleSchedule ss = SingleSchedule.getInstance();
 
-
-        // view 2018
-        // view current month
-        // view current week -- do same as for week, for year and month
-        // view current year
-        // view today
-        // view 10
-        // view 10/10
-        // view 10/10/2016
-        // view starting 10/10
-        // view starting today
-        // view reoccurring
-        // view 10/10 - 12/10
-        // view 10/10/2016 - 10/01/2017
-
         if (view_reoccurring == true){
             //TODO
         } else if (date != null) {
@@ -231,7 +187,11 @@ public class VIEW extends STATEMENT {
             String day = sdf.format(date);
             result.append("MY SCHEDULE FOR " + day + ": \n");
             ArrayList<EventObject> events = ss.getDateEvents(date);
-            result.append(getDayScheduleStr(events));
+            if (events != null){
+                result.append(getDayScheduleStr(events));
+            } else {
+                result.append("--- No events scheduled ---");
+            }
 
         } else if (date_range_start != null && date_range_end != null){
 
@@ -241,17 +201,21 @@ public class VIEW extends STATEMENT {
             result.append("MY SCHEDULE FROM " + range_start + " TO " + range_end+ ": \n");
             TreeMap<Calendar, ArrayList<EventObject>> events = ss.getRangeEvents(date_range_start, date_range_end);
 
-            for(Map.Entry<Calendar, ArrayList<EventObject>> entry : events.entrySet()) {
+            if (events != null) {
+                for (Map.Entry<Calendar, ArrayList<EventObject>> entry : events.entrySet()) {
 
-                Calendar key = entry.getKey();
-                ArrayList<EventObject> value = entry.getValue();
+                    Calendar key = entry.getKey();
+                    ArrayList<EventObject> value = entry.getValue();
 
-                String day = sdf.format(key);
-                result.append(day + ": \n");
-                result.append("\n * * * ");
+                    String day = sdf.format(key);
+                    result.append(day + ": \n");
+                    result.append("\n * * * ");
 
-                result.append(getDayScheduleStr(value));
+                    result.append(getDayScheduleStr(value));
 
+                }
+            } else {
+                result.append("--- No events scheduled for this time period ---");
             }
         }
 
