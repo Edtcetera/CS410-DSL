@@ -14,27 +14,29 @@ import java.util.Locale;
 public class SCHEDULE extends STATEMENT {
     EventObject eventObj = new EventObject();
     Calendar scheduleDay = Calendar.getInstance();
+    String reoccuring;
     @Override
     public void parse() {
         tokenizer.getAndCheckNext("SCHEDULE");
         String next = tokenizer.getNext();
         if (next.equals("daily")) {
-            //todo daily
+            reoccuring = "daily";
             next = tokenizer.getNext();
             eventObj.setTitle(next);
         } else if (next.equals("weekly")) {
-            //todo weekly
+            reoccuring = "weekly";
             next = tokenizer.getNext();
             eventObj.setTitle(next);
         } else if (next.equals("monthly")) {
-            //todo monthly
+            reoccuring = "monthly";
             next = tokenizer.getNext();
             eventObj.setTitle(next);
-        } else if (next.equals("annual")) {
-            //todo annual
+        } else if (next.equals("annually")) {
+            reoccuring = "annually";
             next = tokenizer.getNext();
             eventObj.setTitle(next);
         } else { //non-recurring event
+            reoccuring = "none";
             eventObj.setTitle(next);
         }
 
@@ -63,7 +65,39 @@ public class SCHEDULE extends STATEMENT {
 
     @Override
     public String evaluate() throws FileNotFoundException, UnsupportedEncodingException {
-        SingleSchedule.getInstance().insertEventObject(scheduleDay, eventObj);
+        if (reoccuring.equals("none")) {
+            SingleSchedule.getInstance().insertEventObject(scheduleDay, eventObj);
+        } else if (reoccuring.equals("daily")) {
+            Calendar insertedScheduleDay = Calendar.getInstance();
+            insertedScheduleDay.setTime(scheduleDay.getTime());
+            for (int i = 0; i <= 365; i++) {
+                insertedScheduleDay.add(Calendar.DATE, i);
+                SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
+            }
+        } else if (reoccuring.equals("weekly")) {
+            Calendar insertedScheduleDay = Calendar.getInstance();
+            insertedScheduleDay.setTime(scheduleDay.getTime());
+            for (int i = 0; i <= 52; i++) {
+                insertedScheduleDay.add(Calendar.DAY_OF_WEEK, i);
+                SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
+            }
+        } else if (reoccuring.equals("monthly")) {
+            Calendar insertedScheduleDay = Calendar.getInstance();
+            insertedScheduleDay.setTime(scheduleDay.getTime());
+            for (int i = 0; i <= 12; i++) {
+                insertedScheduleDay.add(Calendar.MONTH, i);
+                SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
+            }
+        } else if (reoccuring.equals("annually")) {
+            Calendar insertedScheduleDay = Calendar.getInstance();
+            insertedScheduleDay.setTime(scheduleDay.getTime());
+            for (int i = 0; i <= 1; i++) {
+                insertedScheduleDay.add(Calendar.YEAR, i);
+                SingleSchedule.getInstance().insertEventObject(insertedScheduleDay, eventObj);
+            }
+        } else {
+            System.out.println("Cannot recognize reoccurence");
+        }
         System.out.println("Inserted: " + scheduleDay.toString() + " " + eventObj.getTitle() + " " +
                 eventObj.getStart().toString() + " " + eventObj.getEnd());
         return null;
