@@ -7,5 +7,5 @@ EDIT "grocery" 01/01 "buy cheese"
 EDIT "grocery" 01/01 15:00-15:30
 DELETE "grocery" 01/01
 VIEW 01/01
+VIEW current month
 UPDATE 2019
-SCHEDULE reoccurring MWF "paint" 16/03 17:00-:18:00

@@ -59,9 +59,8 @@ public class VIEW extends STATEMENT {
         String n3;
 
         if (!n1.equals("NO_MORE_TOKENS")){
-            n2 = tokenizer.getNext();
-            if (n1.equals("current")){
-                if (n2.equals("month")) {
+            if (n1.contains("current") || n1.contains("this")){
+                if (n1.contains("month")) {
 
                     int month = Calendar.getInstance().get(Calendar.MONTH);
                     int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -72,7 +71,7 @@ public class VIEW extends STATEMENT {
                     date_range_start = c_start;
                     date_range_end = c_end;
 
-                } else if (n2.equals("year")) {
+                } else if (n1.contains("year")) {
 
                     int year = Calendar.getInstance().get(Calendar.YEAR);
                     Calendar c_start = Calendar.getInstance();
@@ -82,7 +81,7 @@ public class VIEW extends STATEMENT {
                     date_range_start = c_start;
                     date_range_end = c_end;
 
-                } else if (n2.equals("week")){
+                } else if (n1.contains("week")){
                     Calendar c_start = Calendar.getInstance();
                     Calendar c_end = Calendar.getInstance();
                     c_start.setTime(getWeekStartDate());
@@ -92,23 +91,8 @@ public class VIEW extends STATEMENT {
                 } else System.out.println("Could not parse VIEW.");
             }
 
-            else if (n1.equals("starting")){
-                if (!n2.equals("NO_MORE_TOKENS")){
-                    if (n2.equals("today")){
-                        date_range_start = Calendar.getInstance();
-                    } else {
-                        date_range_start = getDate(n2);
-                    }
-                } else
-                    System.out.println("Could not parse VIEW.");
-
-            }
-
             else if (n1.equals("today")){
                 date = Calendar.getInstance();
-                if (!n2.equals("NO_MORE_TOKENS")) {
-                    // TODO set the time range
-                }
             }
 
             else if (n1.equals("reoccurring")){
@@ -116,44 +100,25 @@ public class VIEW extends STATEMENT {
             }
 
             // either single date or date range case is left
-            else if (n2.equals("NO_MORE_TOKENS")){
-                // single date
-                if (!n1.contains("/")){
-                    if (n1.length() == 2){
-                        int month = Integer.parseInt(n1);
-                        int year = Calendar.getInstance().get(Calendar.YEAR);
-                        Calendar c_start = Calendar.getInstance();
-                        Calendar c_end = Calendar.getInstance();
-                        c_start.setTime(getMonthStartDate(year, month));
-                        c_end.setTime(getMonthEndDate(year, month));
-                        date_range_start = c_start;
-                        date_range_end = c_end;
+            else if (!n1.contains("/")){
+                int year = Integer.parseInt(n1);
+                Calendar c_start = Calendar.getInstance();
+                Calendar c_end = Calendar.getInstance();
+                c_start.setTime(getYearStartDate(year));
+                c_end.setTime(getYearEndDate(year));
+                date_range_start = c_start;
+                date_range_end = c_end;
 
-                    } else {
-                        int year = Integer.parseInt(n1);
-                        Calendar c_start = Calendar.getInstance();
-                        Calendar c_end = Calendar.getInstance();
-                        c_start.setTime(getYearStartDate(year));
-                        c_end.setTime(getYearEndDate(year));
-                        date_range_start = c_start;
-                        date_range_end = c_end;
-                    }
-                } else {
-                    date = getDate(n1);
-                }
+            } else if (!n1.contains("-")){
+                date = getDate(n1);
             } else {
-                // date range or single date with time range
-                if (!n2.equals("-")){
-                    // single date with time range
-                    // TODO set the time range
-                } else {
-                    // Date range
-                    n3 = tokenizer.getNext();
-                    date_range_start = getDate(n1);
-                    date_range_end = getDate(n3);
-                }
+                // date range 10/10/2016 - 10/01/2017
+                n1.replaceAll( " ", "");
+                String[] parts = n1.split("-");
+                date_range_start = getDate(parts[0]);
+                date_range_end = getDate(parts[1]);
             }
-        } else System.out.println("Could not parse VIEW.");
+        }
 
     }
 
