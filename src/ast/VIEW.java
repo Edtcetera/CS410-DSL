@@ -38,8 +38,8 @@ public class VIEW extends STATEMENT {
                     int year = Calendar.getInstance().get(Calendar.YEAR);
                     Calendar c_start = Calendar.getInstance();
                     Calendar c_end = Calendar.getInstance();
-                    c_start.setTime(getMonthStartDate(year, month));
-                    c_end.setTime(getMonthEndDate(year, month));
+                    c_start.setTime(getMonthStartDate(year, month + 1));
+                    c_end.setTime(getMonthEndDate(year, month + 1));
                     date_range_start = c_start;
                     date_range_end = c_end;
 
@@ -156,7 +156,7 @@ public class VIEW extends STATEMENT {
     }
 
     private static String getDayScheduleStr(ArrayList<EventObject> events){
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         StringBuilder result = new StringBuilder();
         for (EventObject event : events) {
             String start = sdf.format(event.getStart());
@@ -207,7 +207,7 @@ public class VIEW extends STATEMENT {
                     Calendar key = entry.getKey();
                     ArrayList<EventObject> value = entry.getValue();
 
-                    String day = sdf.format(key);
+                    String day = sdf.format(key.getTime());
                     result.append(day + ": \n");
                     result.append("\n * * * ");
 

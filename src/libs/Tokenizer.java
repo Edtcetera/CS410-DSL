@@ -39,8 +39,9 @@ public class Tokenizer {
         }
 
         tokenizedProgram = tokenizedProgram.replaceAll("\"([\\w+\\s*]*)\"", "_$1_");
-        tokenizedProgram = tokenizedProgram.replaceAll("(([0-9]+)/([0-9]+))", "_$1_");
+//        tokenizedProgram = tokenizedProgram.replaceAll("(([0-9]+)/([0-9]+))", "_$1_");
         tokenizedProgram = tokenizedProgram.replaceAll("(([0-9]+):([0-9]+)[-[0-9]+:[0-9]+]*)", "_$1_");
+        tokenizedProgram = tokenizedProgram.replaceAll("([0-9]+/[0-9]+(-[0-9]+/[0-9]+)*)", "_$1_");
 
         System.out.println(tokenizedProgram);
         String [] temparray=tokenizedProgram.split("[ ]*[_]+[ ]*[_]*");
