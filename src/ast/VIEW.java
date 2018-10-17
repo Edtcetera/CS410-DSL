@@ -184,7 +184,7 @@ public class VIEW extends STATEMENT {
         } else if (date != null) {
 
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
-            String day = sdf.format(date);
+            String day = sdf.format(date.getTime());
             result.append("MY SCHEDULE FOR " + day + ": \n");
             ArrayList<EventObject> events = ss.getDateEvents(date);
             if (events != null){
@@ -196,8 +196,8 @@ public class VIEW extends STATEMENT {
         } else if (date_range_start != null && date_range_end != null){
 
             SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
-            String range_start = sdf.format(date_range_start);
-            String range_end = sdf.format(date_range_end);
+            String range_start = sdf.format(date_range_start.getTime());
+            String range_end = sdf.format(date_range_end.getTime());
             result.append("MY SCHEDULE FROM " + range_start + " TO " + range_end+ ": \n");
             TreeMap<Calendar, ArrayList<EventObject>> events = ss.getRangeEvents(date_range_start, date_range_end);
 
