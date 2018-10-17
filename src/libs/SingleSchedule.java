@@ -29,12 +29,12 @@ public class SingleSchedule {
     }
 
     public void deleteEventObject(Calendar calendar, String titleOfEventObjectToDelete) {
-        EventObject edit = new EventObject();
         ArrayList<EventObject> singleDayData = dh.get(calendar);
         for (EventObject t : singleDayData) {
             if (t.getTitle().equals(titleOfEventObjectToDelete)) {
-                edit = t;
                 singleDayData.remove(t);
+                if (singleDayData.isEmpty())
+                    break;
             }
         }
         dh.put(calendar, singleDayData);
@@ -47,6 +47,7 @@ public class SingleSchedule {
             if (t.getTitle().equals(titleOfEventObjecttoDelete)) {
                 edit = t;
                 singleDayData.remove(t);
+                break;
             }
         }
         if (edit == null) {

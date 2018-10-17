@@ -7,10 +7,11 @@ import libs.SingleSchedule;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.*;
+
 import static java.time.temporal.TemporalAdjusters.firstDayOfYear;
 import static java.time.temporal.TemporalAdjusters.lastDayOfYear;
 
@@ -97,13 +98,12 @@ public class VIEW extends STATEMENT {
         int slashCount = token.length() - token.replace("/", "").length();
         Calendar c = Calendar.getInstance();
         SimpleDateFormat sdf;
-        if (slashCount == 2){
-            sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
-        } else {
-            sdf = new SimpleDateFormat("MM/dd", Locale.CANADA);
-        }
+        sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
         try {
-            c.setTime(sdf.parse(token + "/" + Integer.toString(SingleSchedule.getInstance().getCurrentWorkingYear())));
+            if (token.split("/").length > 2)
+                c.setTime(sdf.parse(token));
+            else
+                c.setTime(sdf.parse(token + "/" + Integer.toString(SingleSchedule.getInstance().getCurrentWorkingYear())));
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -183,7 +183,7 @@ public class VIEW extends STATEMENT {
             //TODO
         } else if (date != null) {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
             String day = sdf.format(date.getTime());
             result.append("MY SCHEDULE FOR " + day + ": \n");
             ArrayList<EventObject> events = ss.getDateEvents(date);
@@ -195,13 +195,13 @@ public class VIEW extends STATEMENT {
 
         } else if (date_range_start != null && date_range_end != null){
 
-            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/YYYY", Locale.CANADA);
+            SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy", Locale.CANADA);
             String range_start = sdf.format(date_range_start.getTime());
             String range_end = sdf.format(date_range_end.getTime());
             result.append("MY SCHEDULE FROM " + range_start + " TO " + range_end+ ": \n");
             TreeMap<Calendar, ArrayList<EventObject>> events = ss.getRangeEvents(date_range_start, date_range_end);
 
-            if (events != null) {
+            if (events != null && events.size() != 0) {
                 for (Map.Entry<Calendar, ArrayList<EventObject>> entry : events.entrySet()) {
 
                     Calendar key = entry.getKey();
@@ -218,7 +218,7 @@ public class VIEW extends STATEMENT {
                 result.append("--- No events scheduled for this time period ---");
             }
         }
-
+        System.out.println(result.toString());
         return result.toString();
     }
 }
